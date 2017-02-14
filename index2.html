@@ -1,0 +1,131 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta id="theme-color" name="theme-color" content="#ffffff">
+
+  <base target="_blank">
+
+  <title>Camera with filter</title>
+  <article>
+
+
+
+
+
+
+
+  <div id="container">
+
+
+
+    <video autoplay></video>
+
+    <!--<label class="fil" for="select">Filter</label>
+    <select id="filter">
+      <option value="none">None</option>
+      <option value="blur">Blur</option>
+      <option value="grayscale">Grayscale</option>
+      <option value="invert">Invert</option>
+      <option value="sepia">Sepia</option>
+      <option value="saturate">Saturate</option>
+      <option value="hue">Hue</option>
+      <option value="darken">Darken</option>
+      <option value="contrast">Contrast</option>
+      <option value="all-the-things">Shade</option>
+      <option value="tint">Tint</option>
+      <option value="ig-toaster ">Toaster </option>
+        <option value="ig-xpro2">Pro X</option>
+      <option value="ig-kelvin">Kelvin</option>
+        <option value="ig-lofi">Lofi</option>
+        <option value="hefe">Hefe</option>
+        <option value="ig-brannan">Brannan</option>
+        <option value="ig-sierra ">Sierra </option>
+        <option value="ig-sutro">Sutro</option>
+        <option value="filter_multiple-filters">Multi</option>
+        <option value="filter_mayfair">Mayfair</option>
+        <option value="filter_1977">1977</option>
+    </select>  -->
+
+    <button class="animated infinite pulse" id="snapshot">Take Photo</button>
+<!--<a id="download">Download Your Picture</a><br> -->
+    <canvas></canvas>
+
+
+  </div>
+</div>
+
+
+
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+<script>
+'use strict';
+
+
+
+
+var snapshotButton = document.querySelector('button#snapshot');
+// var filterSelect = document.querySelector('select#filter');
+
+// Put variables in global scope to make them available to the browser console.
+var video = window.video = document.querySelector('video');
+var canvas = window.canvas = document.querySelector('canvas');
+canvas.width = 480;
+canvas.height = 360;
+
+snapshotButton.onclick = function() {
+  // canvas.className = filterSelect.value;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+};
+
+
+// filterSelect.onchange = function() {
+//   video.className = filterSelect.value;
+// };
+// function downloadCanvas(link, canvasId, filename) {
+//     link.href = document.querySelector(canvasId).toDataURL();
+//     link.download = filename;
+// }
+
+/**
+ * The event handler for the link's onclick event. We give THIS as a
+ * parameter (=the link element), ID of the canvas and a filename.
+*/
+// document.getElementById('download').addEventListener('click', function() {
+//     downloadCanvas(this, 'canvas', 'INSTAVIDTIME.png');
+// }, false);
+
+
+var constraints = {
+  audio: false,
+  video: true
+};
+
+function handleSuccess(stream) {
+  window.stream = stream; // make stream available to browser console
+  video.srcObject = stream;
+}
+
+function handleError(error) {
+  console.log('navigator.getUserMedia error: ', error);
+}
+
+
+
+navigator.mediaDevices.getUserMedia(constraints).
+    then(handleSuccess).catch(handleError);
+
+
+
+</script>
+
+</body>
+</html>
