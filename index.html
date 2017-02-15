@@ -1,92 +1,62 @@
-
-
 <!DOCTYPE html>
+
 <html>
+
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+    <base target="_blank">
+    <title>Webcam Example</title>
 
-  <meta charset="utf-8">
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
-  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
-
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta id="theme-color" name="theme-color" content="#ffffff">
-
-  <base target="_blank">
-
-  <title>Camera with filter</title>
-  
+</head>
 
 
+<body>
+
+    <div id="container">
+        <video autoplay></video>
+        <button class="animated infinite pulse" id="snapshot">Take Photo</button>
+        <canvas></canvas>
+    </div>
 
 
+    <script>
+        'use strict';
 
+        var snapshotButton = document.querySelector('button#snapshot');
 
+        // Put variables in global scope to make them available to the browser console.
+        var video = window.video = document.querySelector('video');
+        var canvas = window.canvas = document.querySelector('canvas');
+        canvas.width = 480;
+        canvas.height = 360;
 
-  <div id="container">
+        snapshotButton.onclick = function() {
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        };
 
+        var constraints = {
+            audio: false,
+            video: true
+        };
 
+        function handleSuccess(stream) {
+            window.stream = stream; // make stream available to browser console
+            video.srcObject = stream;
+        }
 
-    <video autoplay></video>
+        function handleError(error) {
+            console.log('navigator.getUserMedia error: ', error);
+        }
 
-
-
-    <button class="animated infinite pulse" id="snapshot">Take Photo</button>
-
-    <canvas></canvas>
-
-
-  </div>
-</div>
-
-
-
-  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-
-<script>
-'use strict';
-
-
-
-
-var snapshotButton = document.querySelector('button#snapshot');
-
-
-// Put variables in global scope to make them available to the browser console.
-var video = window.video = document.querySelector('video');
-var canvas = window.canvas = document.querySelector('canvas');
-canvas.width = 480;
-canvas.height = 360;
-
-snapshotButton.onclick = function() {
-
-  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-};
-
-
-
-
-var constraints = {
-  audio: false,
-  video: true
-};
-
-function handleSuccess(stream) {
-  window.stream = stream; // make stream available to browser console
-  video.srcObject = stream;
-}
-
-function handleError(error) {
-  console.log('navigator.getUserMedia error: ', error);
-}
-
-
-
-navigator.mediaDevices.getUserMedia(constraints).
-    then(handleSuccess).catch(handleError);
-
-
-
-</script>
+        navigator.mediaDevices.getUserMedia(constraints)
+                 .then(handleSuccess).catch(handleError);
+    </script>
 
 </body>
+
 </html>
